@@ -7,6 +7,8 @@ import com.ecommerce.amazio.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +48,9 @@ public class ProductsAPI {
     }
 
     @GetMapping("/getAllProducts")
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
+    public Page<Product> getAllProducts(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "12") int size,
+                                        @RequestParam(required = false) List<String> category){
+        return productService.getAllProducts(page,size,category);
     }
 }

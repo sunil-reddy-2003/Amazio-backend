@@ -7,10 +7,14 @@ import com.ecommerce.amazio.repository.ProductRepo;
 import com.ecommerce.amazio.requestDto.ProductRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -55,7 +59,11 @@ public class ProductService {
         return productRepo.save(oldProduct);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepo.findAll();
+    public Page<Product> getAllProducts(int page, int size,List<String> category) {
+//        return productRepo.findAll(PageRequest.of(page,size, Sort.by("price").ascending())).getContent();
+        Pageable pageable= PageRequest.of(page,size, Sort.by("price").ascending());
+        if(category == null || category.isEmpty()) return productRepo.findAll(pageable);
+
+        return productRepo.findByCategoryIn(category,pageable);
     }
 }

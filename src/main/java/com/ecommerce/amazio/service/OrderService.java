@@ -9,7 +9,6 @@ import com.ecommerce.amazio.repository.ProductRepo;
 import com.ecommerce.amazio.repository.UserRepo;
 import com.ecommerce.amazio.requestDto.*;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,7 +92,8 @@ public class OrderService {
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
 
-        User user=userRepo.getUserByEmail(email);
+//        User user=userRepo.getUserByEmail(email);
+        User user=userRepo.getByEmail(email);
         List<Order> orders = user.getOrders();
         if (orders == null) orders = new ArrayList<>();
         orders.add(order);

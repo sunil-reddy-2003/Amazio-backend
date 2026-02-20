@@ -37,7 +37,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers(
                                 "/api/user/**",
-//                                "/api/order/**",
                                 "/api/admin/getAllProducts").permitAll()
 //                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()

@@ -59,11 +59,15 @@ public class ProductService {
         return productRepo.save(oldProduct);
     }
 
-    public Page<Product> getAllProducts(int page, int size,List<String> category) {
+    public Page<Product> getAllProducts(int page, int size,String search,List<String> category) {
 //        return productRepo.findAll(PageRequest.of(page,size, Sort.by("price").ascending())).getContent();
         Pageable pageable= PageRequest.of(page,size, Sort.by("price").ascending());
-        if(category == null || category.isEmpty()) return productRepo.findAll(pageable);
 
-        return productRepo.findByCategoryIn(category,pageable);
+        if(category == null || category.isEmpty()){
+            return productRepo.findByNameContainingIgnoreCase( search== null ? "" : search,pageable);
+        }
+        return productRepo.findByNameContainingIgnoreCaseAndCategoryIn(
+                search==null ? "" : search,category,pageable
+        );
     }
 }

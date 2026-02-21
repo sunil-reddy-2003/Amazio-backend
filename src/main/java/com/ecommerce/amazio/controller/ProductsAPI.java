@@ -50,7 +50,9 @@ public class ProductsAPI {
     @GetMapping("/getAllProducts")
     public Page<Product> getAllProducts(@RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "12") int size,
+                                        @RequestParam(required = false) String search,
                                         @RequestParam(required = false) List<String> category){
-        return productService.getAllProducts(page,size,category);
+
+        return productService.getAllProducts(page,size,search,category);
     }
 }

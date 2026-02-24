@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -46,12 +47,5 @@ public class UsersApi {
         UserResponseDto userResponse=new UserResponseDto(user.getUserId(), user.getEmail(), user.getFName(), user.getLName(), user.getMobile());
         return ResponseEntity.ok(new TokenResponse(jwtToken,userResponse));
     }
-
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getUserDetailsById(@PathVariable UUID id){
-//        User user= userService.getUserDetailsById(id);
-//        UserResponseDto userResponseDto=new UserResponseDto(user.getUserId(),);
-//    }
 
 }

@@ -70,4 +70,12 @@ public class ProductService {
                 search==null ? "" : search,category,pageable
         );
     }
+
+    public Page<Product> viewAllProducts(int page, int size, String search, List<String> category) {
+        Pageable pageable=PageRequest.of(page,size);
+        if(category==null || category.isEmpty()){
+            return productRepo.findByNameContainingIgnoreCase(search==null?"":search,pageable);
+        }
+        return productRepo.findByNameContainingIgnoreCaseAndCategoryIn(search==null?"":search,category,pageable);
+    }
 }

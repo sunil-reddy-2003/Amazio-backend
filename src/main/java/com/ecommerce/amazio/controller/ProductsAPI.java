@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class ProductsAPI {
     }
 
     @PostMapping("/addProduct")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> addProduct(@RequestBody ProductRequestDto product) {
         log.info("inside add product: "+product.toString());
         Product dbProduct= productService.addProduct(product);
@@ -54,5 +56,13 @@ public class ProductsAPI {
                                         @RequestParam(required = false) List<String> category){
 
         return productService.getAllProducts(page,size,search,category);
+    }
+
+    @GetMapping("/viewallproducts")
+    public Page<Product> viewAllProducts(@RequestParam(defaultValue = "0")int page,
+                                         @RequestParam(defaultValue = "12")int size,
+                                         @RequestParam(required = false)String search,
+                                         @RequestParam(required = false)List<String> category){
+        return productService.viewAllProducts(page,size,search,category);
     }
 }

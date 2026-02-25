@@ -65,4 +65,11 @@ public class ProductsAPI {
                                          @RequestParam(required = false)List<String> category){
         return productService.viewAllProducts(page,size,search,category);
     }
+
+    @GetMapping("/getproductbyid/{prodId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getProductById(@PathVariable int prodId){
+        Product product=productService.getProductById(prodId);
+        return ResponseEntity.ok(product);
+    }
 }

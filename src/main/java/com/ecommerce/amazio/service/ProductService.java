@@ -78,4 +78,11 @@ public class ProductService {
         }
         return productRepo.findByNameContainingIgnoreCaseAndCategoryIn(search==null?"":search,category,pageable);
     }
+
+    public Product getProductById(int prodId) {
+        if(!productRepo.existsById(prodId)){
+            throw new ProductNotFoundException("No product found with product id: "+prodId);
+        }
+        return productRepo.findById(prodId).get();
+    }
 }

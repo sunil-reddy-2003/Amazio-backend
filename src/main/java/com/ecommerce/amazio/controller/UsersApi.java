@@ -48,4 +48,13 @@ public class UsersApi {
         return ResponseEntity.ok(new TokenResponse(jwtToken,userResponse));
     }
 
+    @PostMapping("/adminlogin")
+    public ResponseEntity<?> loginAdmin(@RequestBody LoginRequestDto loginRequest){
+        User user=authenticationService.authenticateAdmin(loginRequest);
+        String jwtToken=jwtService.generateJwtToken(user);
+        UserResponseDto userResponse=new UserResponseDto(user.getUserId(), user.getEmail(), user.getFName(), user.getLName(), user.getMobile());
+        return ResponseEntity.ok(new TokenResponse(jwtToken,userResponse));
+    }
+
+
 }

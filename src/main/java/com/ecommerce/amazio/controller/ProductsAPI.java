@@ -42,6 +42,7 @@ public class ProductsAPI {
     }
 
     @PutMapping("/updateProduct/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateProduct(@PathVariable int id,
                                 @RequestBody Product product) {
 
@@ -59,6 +60,7 @@ public class ProductsAPI {
     }
 
     @GetMapping("/viewallproducts")
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<Product> viewAllProducts(@RequestParam(defaultValue = "0")int page,
                                          @RequestParam(defaultValue = "12")int size,
                                          @RequestParam(required = false)String search,

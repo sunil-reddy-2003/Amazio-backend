@@ -16,10 +16,11 @@ import java.util.List;
 
 @Configuration
 public class ProductSeeder {
-
     @Bean
     CommandLineRunner seedProducts(ProductRepo productRepository) {
         return args -> {
+
+            System.out.println("Product count = " + productRepository.count());
 
             if (productRepository.count() == 0) {
 

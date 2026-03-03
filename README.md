@@ -67,9 +67,31 @@ Authentication flow:
 
 ---
 
-## 📂 Project Structure
-<img width="381" height="538" alt="image" src="https://github.com/user-attachments/assets/b037ccae-88d9-49f2-95e8-d8b8a7ce5c23" />
+## 📁 Project Structure
 
+```bash
+src/
+└── main/
+    ├── java/
+    │   └── com.ecommerce.amazio/
+    │       ├── controller/      
+    │       ├── convertors/      
+    │       ├── enums/           
+    │       ├── exceptions/      
+    │       ├── model/           
+    │       ├── repository/      
+    │       ├── requestDto/      
+    │       ├── security/
+    │       │   ├── config/      
+    │       │   ├── filter/      
+    │       │   ├── jwt/         
+    │       │   └── service/     
+    │       ├── service/         
+    │       └── AmazioApplication.java  
+    └── resources/
+        ├── application.properties  
+        └── products.json           
+```
 ---
 
 ## 📦 Core Modules
@@ -86,12 +108,12 @@ Authentication flow:
 - ProductService
 
 ### Models
---User
---Address
---Order
---Payment
---OrderItem
---Product
+-User
+-Address
+-Order
+-Payment
+-OrderItem
+-Product
 
 ### Repositories
 - UserRepo

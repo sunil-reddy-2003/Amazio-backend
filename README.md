@@ -108,12 +108,12 @@ src/
 - ProductService
 
 ### Models
--User
--Address
--Order
--Payment
--OrderItem
--Product
+- User
+- Address
+- Order
+- Payment
+- OrderItem
+- Product
 
 ### Repositories
 - UserRepo

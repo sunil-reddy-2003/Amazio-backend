@@ -26,10 +26,10 @@ public class AuthenticationService {
         String email=loginRequest.getEmail();
         String password=loginRequest.getPassword();
         User customer=userRepo.getUserByEmail(email);
-        if(!customer.getUserRole().equals(UserRole.CUSTOMER)) throw new UserNotFoundException("Unauthorized user");
-        if(customer==null) throw new UserNotFoundException("no user found with the email: "+email);
+        if(customer==null) throw new UserNotFoundException("User Doesn't Exist!!");
+        if(!customer.getUserRole().equals(UserRole.CUSTOMER)) throw new UserNotFoundException("Unauthorized user!!");
         if(!passwordEncoder.matches(password, customer.getPassword())){
-            throw new InvalidCredentialsException("password or email is incorrect");
+            throw new InvalidCredentialsException("Incorrect password!!");
         }
         return customer;
     }

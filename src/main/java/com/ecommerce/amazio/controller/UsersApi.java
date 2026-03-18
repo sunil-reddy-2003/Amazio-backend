@@ -1,5 +1,8 @@
 package com.ecommerce.amazio.controller;
 
+import com.ecommerce.amazio.exceptions.InvalidCredentialsException;
+import com.ecommerce.amazio.exceptions.UserAlreadyExistsException;
+import com.ecommerce.amazio.exceptions.UserNotFoundException;
 import com.ecommerce.amazio.model.User;
 import com.ecommerce.amazio.requestDto.LoginRequestDto;
 import com.ecommerce.amazio.requestDto.TokenResponse;
@@ -15,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -34,18 +39,38 @@ public class UsersApi {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@RequestBody User registerUser){
-        User savedUser=userService.registerUser(registerUser);
-        return ResponseEntity.ok(savedUser);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    public ResponseEntity<Map<String,Object>> registerUser(@RequestBody User registerUser){
+        Map<String,Object> response=new HashMap<>();
+        try{
+            User savedUser=userService.registerUser(registerUser);
+            response.put("Success",true);
+            response.put("message","Signed up successfully!!");
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }catch (UserAlreadyExistsException e){
+            response.put("Success",false);
+            response.put("message",e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDto loginRequest){
-        User user=authenticationService.authenticateUser(loginRequest);
-        String jwtToken=jwtService.generateJwtToken(user);
-        UserResponseDto userResponse=new UserResponseDto(user.getUserId(), user.getEmail(), user.getFName(), user.getLName(), user.getMobile());
-        return ResponseEntity.ok(new TokenResponse(jwtToken,userResponse));
+    public ResponseEntity<Map<String ,Object>> loginUser(@RequestBody LoginRequestDto loginRequest){
+        Map<String,Object> response=new HashMap<>();
+
+        try{
+            User user=authenticationService.authenticateUser(loginRequest);
+            String jwtToken=jwtService.generateJwtToken(user);
+            UserResponseDto userResponse=new UserResponseDto(user.getUserId(), user.getEmail(), user.getFName(), user.getLName(), user.getMobile());
+
+            response.put("Success",true);
+            response.put("token",jwtToken);
+            response.put("user",userResponse);
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }catch (UserNotFoundException | InvalidCredentialsException e){
+            response.put("Success",false);
+            response.put("message",e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
     }
 
     @PostMapping("/adminlogin")

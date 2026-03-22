@@ -1,12 +1,12 @@
 package com.ecommerce.amazio.controller;
 
+import com.ecommerce.amazio.exceptions.AddressNotFoundException;
 import com.ecommerce.amazio.exceptions.InvalidCredentialsException;
 import com.ecommerce.amazio.exceptions.UserAlreadyExistsException;
 import com.ecommerce.amazio.exceptions.UserNotFoundException;
 import com.ecommerce.amazio.model.User;
-import com.ecommerce.amazio.requestDto.LoginRequestDto;
-import com.ecommerce.amazio.requestDto.TokenResponse;
-import com.ecommerce.amazio.requestDto.UserResponseDto;
+import com.ecommerce.amazio.model.UserAddress;
+import com.ecommerce.amazio.requestDto.*;
 import com.ecommerce.amazio.security.jwt.JwtService;
 import com.ecommerce.amazio.security.service.AuthenticationService;
 import com.ecommerce.amazio.service.UserService;
@@ -16,9 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -81,5 +85,41 @@ public class UsersApi {
         return ResponseEntity.ok(new TokenResponse(jwtToken,userResponse));
     }
 
+
+    @PostMapping("/saveaddress")
+    public ResponseEntity<?> saveAddress(@RequestBody UserAddressDto userAddress){
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        String email=authentication.getName();
+        String response=userService.saveAddress(userAddress,email);
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getaddress")
+    public  ResponseEntity<?> getAddress(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String email=authentication.getName();
+        Map<String,Object> map=new HashMap<>();
+        try {
+            List<UserAddress> addresses=userService.getAddress(email);
+            map.put("addresses",addresses);
+            map.put("status",true);
+        }catch (AddressNotFoundException e){
+            map.put("status",false);
+        }
+//        Map<String,Object> response=Map.of("addresses",addresses,"status",true);
+        return ResponseEntity.ok(map);
+    }
+
+    @PutMapping("/updateaddress/{id}")
+    public ResponseEntity<?> updateAddress(@PathVariable int id, @RequestBody AddressRequestDto addressRequest){
+        String response=userService.updateAddress(id,addressRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/deleteaddress/{id}")
+    public ResponseEntity<?> deleteAddress(@PathVariable int id){
+        String response=userService.deleteAddress(id);
+        return ResponseEntity.ok(response);
+    }
 
 }

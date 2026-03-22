@@ -14,6 +14,4 @@ public class AddressResponseDto {
     String landmark;
     String city;
     String state;
-    String addressType;
-    boolean defaultAddress;
 }

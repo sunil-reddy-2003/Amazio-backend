@@ -36,9 +36,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers(
-                                "/api/user/**",
-                                "/api/admin/getAllProducts",
-                                        "/api/health").permitAll()
+                                        "/api/user/signup",
+                                        "/api/user/login",
+                                        "/api/user/adminlogin",
+                                        "/api/admin/getAllProducts",
+                                        "/api/health"
+                                ).permitAll()
 //                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )

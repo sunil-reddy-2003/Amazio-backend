@@ -3,14 +3,13 @@ package com.ecommerce.amazio.model;
 import com.ecommerce.amazio.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Payment {
@@ -44,4 +43,17 @@ public class Payment {
     @JoinColumn(name = "orderId")
     private Order order;
 
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "paymentId=" + paymentId +
+                ", paymentStatus=" + paymentStatus +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", transactionId='" + transactionId + '\'' +
+                ", amountPaid=" + amountPaid +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", order=" + order +
+                '}';
+    }
 }

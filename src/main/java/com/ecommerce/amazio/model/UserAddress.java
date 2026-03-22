@@ -3,14 +3,14 @@ package com.ecommerce.amazio.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserAddress {
@@ -35,6 +35,10 @@ public class UserAddress {
     private String addressType;
     @Column(nullable = false,name = "is_default")
     private boolean defaultAddress;
+    @Column(name = "receiverName", nullable = false)
+    private String name;
+    @Column(name = "receiverMobile", nullable = false)
+    private long mobile;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -46,5 +50,25 @@ public class UserAddress {
     @JoinColumn(name = "user_id")
     @ManyToOne
     private User user;
+
+    @Override
+    public String toString() {
+        return "UserAddress{" +
+                "addressId=" + addressId +
+                ", pincode=" + pincode +
+                ", area='" + area + '\'' +
+                ", flat='" + flat + '\'' +
+                ", landmark='" + landmark + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", addressType='" + addressType + '\'' +
+                ", defaultAddress=" + defaultAddress +
+                ", name='" + name + '\'' +
+                ", mobile=" + mobile +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", user=" + user +
+                '}';
+    }
 }
 

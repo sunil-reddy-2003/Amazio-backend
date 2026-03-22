@@ -3,14 +3,13 @@ package com.ecommerce.amazio.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {
@@ -46,9 +45,22 @@ public class Address {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-
-    @JsonBackReference
-    @OneToOne
-    @JoinColumn(name = "orderId")
-    private Order order;
+    @Override
+    public String toString() {
+        return "Address{" +
+                "addressId=" + addressId +
+                ", name='" + name + '\'' +
+                ", mobile=" + mobile +
+                ", pincode=" + pincode +
+                ", area='" + area + '\'' +
+                ", flat='" + flat + '\'' +
+                ", landmark='" + landmark + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", addressType='" + addressType + '\'' +
+                ", defaultAddress=" + defaultAddress +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

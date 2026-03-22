@@ -25,7 +25,7 @@ public class AuthenticationService {
     public User authenticateUser(LoginRequestDto loginRequest) {
         String email=loginRequest.getEmail();
         String password=loginRequest.getPassword();
-        User customer=userRepo.getUserByEmail(email);
+        User customer=userRepo.getByEmail(email);
         if(customer==null) throw new UserNotFoundException("User Doesn't Exist!!");
         if(!customer.getUserRole().equals(UserRole.CUSTOMER)) throw new UserNotFoundException("Unauthorized user!!");
         if(!passwordEncoder.matches(password, customer.getPassword())){
@@ -37,9 +37,8 @@ public class AuthenticationService {
     public User authenticateAdmin(LoginRequestDto loginRequest) {
         String email=loginRequest.getEmail();
         String password=loginRequest.getPassword();
-        User admin=userRepo.getUserByEmail(email);
+        User admin=userRepo.getByEmail(email);
         if(!admin.getUserRole().equals(UserRole.ADMIN)) throw new UserNotFoundException("Unauthorized user");
-        if(admin==null) throw new UserNotFoundException("no user found with the email: "+email);
         if(!passwordEncoder.matches(password, admin.getPassword())){
             throw new InvalidCredentialsException("password or email is incorrect");
         }

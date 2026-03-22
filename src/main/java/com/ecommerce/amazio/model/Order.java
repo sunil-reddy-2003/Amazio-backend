@@ -6,9 +6,7 @@ import com.ecommerce.amazio.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +14,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orderTable")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
@@ -44,14 +43,23 @@ public class Order {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column( nullable = false)
+    private int pincode;
+    @Column(nullable = false)
+    private String area;
+    @Column(nullable = false)
+    private String flat;
+    @Column(nullable = false)
+    private String landmark;
+    @Column(nullable = false)
+    private String city;
+    @Column(nullable = false)
+    private String state;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    @JsonManagedReference
-    @OneToOne(mappedBy = "order",cascade = CascadeType.ALL)
-    private Address address;
 
     @JsonManagedReference
     @OneToOne(mappedBy ="order",cascade = CascadeType.ALL)

@@ -49,24 +49,6 @@ public class OrderService {
             totalQuantity+=item.getQuantity();
         }
 
-
-        Address currAddress=new Address();
-
-        currAddress.setName(address.getName());
-        currAddress.setMobile(address.getMobile());
-        currAddress.setPincode(address.getPincode());
-        currAddress.setArea(address.getArea());
-        currAddress.setFlat(address.getFlat());
-        currAddress.setLandmark(address.getLandmark());
-        currAddress.setCity(address.getCity());
-        currAddress.setState(address.getState());
-        currAddress.setAddressType(address.getAddressType());
-        currAddress.setDefaultAddress(address.isDefaultAddress());
-        currAddress.setCreatedAt(LocalDateTime.now());
-        currAddress.setUpdatedAt(LocalDateTime.now());
-
-        currAddress.setOrder(order);
-
         Payment payment=new Payment();
         payment.setPaymentStatus(PaymentStatus.PENDING);
         if(paymentMethod.equals("Cash on Delivery")){
@@ -86,11 +68,18 @@ public class OrderService {
         order.setDate(LocalDate.now().toString());
         order.setTotalPrice(totalPrice);
         order.setTotalQuantity(totalQuantity);
-        order.setAddress(currAddress);
         order.setOrderItems(items);
         order.setPayment(payment);
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
+
+        order.setPincode(address.getPincode());
+        order.setArea(address.getArea());
+        order.setFlat(address.getFlat());
+        order.setLandmark(address.getLandmark());
+        order.setCity(address.getCity());
+        order.setState(address.getState());
+
 
 //        User user=userRepo.getUserByEmail(email);
         User user=userRepo.getByEmail(email);
@@ -138,17 +127,14 @@ public class OrderService {
             orderItemResponseDtos.add(orderItemResponseDto);
         }
 
-        Address address=order.getAddress();
-        AddressResponseDto addressResponseDto=new AddressResponseDto(
-                address.getPincode(),
-                address.getArea(),
-                address.getFlat(),
-                address.getLandmark(),
-                address.getCity(),
-                address.getState(),
-                address.getAddressType(),
-                address.isDefaultAddress());
-
+        AddressResponseDto address=new AddressResponseDto(
+                order.getPincode(),
+                order.getArea(),
+                order.getFlat(),
+                order.getLandmark(),
+                order.getCity(),
+                order.getState()
+        );
 
 
         Payment payment=order.getPayment();
@@ -166,7 +152,7 @@ public class OrderService {
                 order.getTotalPrice(),
                 order.getTotalQuantity(),
                 orderItemResponseDtos,
-                addressResponseDto,
+                address,
                 paymentResponseDto
         );
 

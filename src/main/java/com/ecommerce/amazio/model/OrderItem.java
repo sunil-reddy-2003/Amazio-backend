@@ -3,14 +3,13 @@ package com.ecommerce.amazio.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem {
@@ -31,4 +30,5 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "orderId")
     private Order order;
+
 }

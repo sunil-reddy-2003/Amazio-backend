@@ -1,8 +1,8 @@
 package com.ecommerce.amazio.controller;
 
-import com.ecommerce.amazio.model.Address;
 import com.ecommerce.amazio.model.Order;
 import com.ecommerce.amazio.model.OrderItem;
+import com.ecommerce.amazio.model.UserAddress;
 import com.ecommerce.amazio.requestDto.OrderInfoResponseDto;
 import com.ecommerce.amazio.requestDto.OrderRequestDto;
 import com.ecommerce.amazio.requestDto.OrdersResponseDto;
@@ -39,7 +39,7 @@ public class OrdersAPI {
         String email=authentication.getName();
 
         List<OrderItem> orderItem=orderRequestDto.getOrderItem();
-        Address address=orderRequestDto.getAddress();
+        UserAddress address=orderRequestDto.getAddress();
         String paymentMethod=orderRequestDto.getPaymentMethod();
 
         Order order= orderService.createOrder(orderItem,address,paymentMethod,email);

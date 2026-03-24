@@ -33,7 +33,7 @@ public class OrderService {
         this.userRepo=userRepo;
     }
 
-    public Order createOrder(List<OrderItem> orderItem, Address address,String paymentMethod,String email) {
+    public Order createOrder(List<OrderItem> orderItem, UserAddress address,String paymentMethod,String email) {
 
         Order order=new Order();
 

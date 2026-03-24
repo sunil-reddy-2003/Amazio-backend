@@ -112,7 +112,9 @@ public class UsersApi {
 
     @PutMapping("/updateaddress/{id}")
     public ResponseEntity<?> updateAddress(@PathVariable int id, @RequestBody AddressRequestDto addressRequest){
-        String response=userService.updateAddress(id,addressRequest);
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String email=authentication.getName();
+        String response=userService.updateAddress(id,addressRequest,email);
         return ResponseEntity.ok(response);
     }
 
@@ -120,6 +122,13 @@ public class UsersApi {
     public ResponseEntity<?> deleteAddress(@PathVariable int id){
         String response=userService.deleteAddress(id);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/updateuser/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable UUID id,@RequestBody UserRequestDto userDetails){
+        User user=userService.updateUser(id,userDetails);
+        UserResponseDto userResponse=new UserResponseDto(user.getUserId(), user.getEmail(), user.getFName(), user.getLName(), user.getMobile());
+        return ResponseEntity.ok(userResponse);
     }
 
 }

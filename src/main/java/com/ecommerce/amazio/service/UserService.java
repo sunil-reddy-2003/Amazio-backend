@@ -9,6 +9,7 @@ import com.ecommerce.amazio.repository.UserAddressRepo;
 import com.ecommerce.amazio.repository.UserRepo;
 import com.ecommerce.amazio.requestDto.AddressRequestDto;
 import com.ecommerce.amazio.requestDto.UserAddressDto;
+import com.ecommerce.amazio.requestDto.UserRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -101,7 +103,15 @@ public class UserService {
     }
 
 
-    public String updateAddress(int id, AddressRequestDto addressRequest) {
+    public String updateAddress(int id, AddressRequestDto addressRequest,String email) {
+        User user=userRepo.getByEmail(email);
+        List<UserAddress> addresses=user.getUserAddress();
+        if(addressRequest.isDefaultAddress()){
+            for (UserAddress add:addresses){
+                add.setDefaultAddress(false);
+            }
+        }
+
         UserAddress address=userAddressRepo.getReferenceById(id);
         address.setPincode(addressRequest.getPincode());
         address.setArea(addressRequest.getArea());
@@ -122,5 +132,14 @@ public class UserService {
     public String deleteAddress(int id) {
         userAddressRepo.deleteById(id);
         return "address deleted successfully";
+    }
+
+    public User updateUser(UUID id, UserRequestDto userDetails) {
+        User user=userRepo.getReferenceById(id);
+        user.setFName(userDetails.getFName());
+        user.setLName(userDetails.getLName());
+        user.setEmail(userDetails.getEmail());
+        user.setMobile(userDetails.getMobile());
+        return userRepo.save(user);
     }
 }
